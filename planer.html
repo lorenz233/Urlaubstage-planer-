@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>MV Urlaubsrechner | Holiday Calculator</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   
+   <script>
+       tailwind.config = {
+           theme: {
+               extend: {
+                   fontFamily: {
+                       sans: ['Space Grotesk', 'sans-serif'],
+                   },
+                   colors: {
+                       'mv-green': '#2E7D32',
+                       'mv-light': '#F1F8E9',
+                       'mv-accent': '#81C784',
+                   },
+                   animation: {
+                       'fade-in': 'fadeIn 0.5s ease-out',
+                       'slide-up': 'slideUp 0.4s ease-out',
+                   },
+                   keyframes: {
+                       fadeIn: {
+                           '0%': { opacity: '0' },
+                           '100%': { opacity: '1' },
+                       },
+                       slideUp: {
+                           '0%': { transform: 'translateY(20px)', opacity: '0' },
+                           '100%': { transform: 'translateY(0)', opacity: '1' },
+                       }
+                   }
+               }
+           }
+       }
+   </script>
+   <style>
+       ::-webkit-scrollbar { width: 8px; }
+       ::-webkit-scrollbar-track { background: #f1f1f1; }
+       ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+       ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+       
+       input[type="date"] {
+           position: relative;
+           padding: 0.5rem 0.75rem;
+       }
+       input[type="date"]::-webkit-calendar-picker-indicator {
+           background: transparent;
+           bottom: 0;
+           color: transparent;
+           cursor: pointer;
+           height: auto;
+           left: 0;
+           position: absolute;
+           right: 0;
+           top: 0;
+           width: auto;
+       }
+       
+       .lang-btn { transition: all 0.3s ease; }
+       .lang-btn.active { background-color: #2E7D32; color: white; }
+   </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans selection:bg-mv-green selection:text-white">
+
+   <!-- Header -->
+   <header class="bg-white border-b border-gray-200 sticky top-0 z-20">
+       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+           <div class="flex items-center gap-3">
+               <div class="w-8 h-8 bg-mv-green rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                   <i class="fa-solid fa-leaf"></i>
+               </div>
+               <h1 class="text-xl font-bold tracking-tight text-gray-900">MV<span class="text-mv-green">Planner</span></h1>
+           </div>
+           
+           <!-- Language Toggle -->
+           <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+               <button onclick="setLanguage('de')" id="btn-de" class="lang-btn px-3 py-1.5 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900 active">
+                   DE
+               </button>
+               <button onclick="setLanguage('en')" id="btn-en" class="lang-btn px-3 py-1.5 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">
+                   EN
+               </button>
+           </div>
+       </div>
+   </header>
+
+   <main class="flex-grow p-4 sm:p-6 lg:p-8">
+       <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+           
+           <!-- Left Column: Controls -->
+           <div class="lg:col-span-5 space-y-6">
+               
+               <!-- Intro Card -->
+               <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-fade-in">
+                   <h2 class="text-2xl font-bold mb-2 text-gray-900" data-i18n="title">Plane deine Auszeit.</h2>
+                   <p class="text-gray-500 mb-6" data-i18n="subtitle">Wähle deine Urlaubsdaten. Wir berechnen die genaue Anzahl der benötigten Urlaubstage - exklusive Wochenenden und Feiertagen in Mecklenburg-Vorpommern.</p>
+                   
+                   <div class="space-y-4">
+                       <div class="relative">
+                           <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1" data-i18n="startDate">Startdatum</label>
+                           <div class="relative group">
+                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                   <i class="fa-regular fa-calendar text-gray-400 group-focus-within:text-mv-green transition-colors"></i>
+                               </div>
+                               <input type="date" id="startDate" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-mv-green focus:border-transparent transition-all duration-200 sm:text-sm shadow-sm">
+                           </div>
+                       </div>
+
+                       <div class="relative">
+                           <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1" data-i18n="endDate">Enddatum</label>
+                           <div class="relative group">
+                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                   <i class="fa-regular fa-calendar-check text-gray-400 group-focus-within:text-mv-green transition-colors"></i>
+                               </div>
+                               <input type="date" id="endDate" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-mv-green focus:border-transparent transition-all duration-200 sm:text-sm shadow-sm">
+                           </div>
+                       </div>
+
+                       <button onclick="calculateHolidays()" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-mv-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mv-green transition-all duration-300 transform hover:scale-[1.02]">
+                           <span data-i18n="calculateBtn">Urlaubstage berechnen</span>
+                           <i class="fa-solid fa-arrow-right ml-2"></i>
+                       </button>
+                   </div>
+               </div>
+
+               <!-- Current Year Holidays List -->
+               <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-fade-in" style="animation-delay: 0.1s;">
+                   <div class="flex items-center justify-between mb-4">
+                       <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                           <span data-i18n="upcomingHolidays">Anstehende Feiertage</span> 
+                           <span id="currentYearDisplay" class="text-mv-green"></span>
+                       </h3>
+                       <span class="text-xs bg-mv-light text-mv-green px-2 py-1 rounded-full" data-i18n="mvSpecific">MV Spezifisch</span>
+                   </div>
+                   <div class="space-y-3" id="holidayList">
+                       <!-- Populated by JS -->
+                   </div>
+               </div>
+           </div>
+
+           <!-- Right Column: Results -->
+           <div class="lg:col-span-7 space-y-6">
+               
+               <!-- Result Hero Card -->
+               <div id="resultCard" class="bg-mv-green rounded-2xl p-8 text-white shadow-lg relative overflow-hidden hidden animate-slide-up">
+                   <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                   <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                   
+                   <div class="relative z-10">
+                       <div class="flex justify-between items-start">
+                           <div>
+                               <p class="text-mv-accent font-medium mb-1" data-i18n="requiredLeave">Benötigte Urlaubstage</p>
+                               <div class="flex items-baseline gap-2">
+                                   <span id="totalDays" class="text-6xl font-bold tracking-tight">0</span>
+                                   <span class="text-xl opacity-80" data-i18n="days">Tage</span>
+                               </div>
+                           </div>
+                           <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                               <i class="fa-solid fa-umbrella-beach text-2xl"></i>
+                           </div>
+                       </div>
+                       
+                       <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/20 pt-6">
+                           <div>
+                               <p class="text-xs text-mv-accent uppercase tracking-wider mb-1" data-i18n="totalSpan">Gesamtzeitraum</p>
+                               <p id="totalSpan" class="text-lg font-semibold">0 Tage</p>
+                           </div>
+                           <div>
+                               <p class="text-xs text-mv-accent uppercase tracking-wider mb-1" data-i18n="weekends">Wochenenden</p>
+                               <p id="weekendDays" class="text-lg font-semibold">0 Tage</p>
+                           </div>
+                           <div>
+                               <p class="text-xs text-mv-accent uppercase tracking-wider mb-1" data-i18n="holidays">Feiertage</p>
+                               <p id="holidayDays" class="text-lg font-semibold">0 Tage</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <!-- Empty State -->
+               <div id="emptyState" class="bg-white rounded-2xl p-8 border border-dashed border-gray-300 flex flex-col items-center justify-center text-center h-64 animate-fade-in">
+                   <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                       <i class="fa-solid fa-calculator text-gray-400 text-2xl"></i>
+                   </div>
+                   <h3 class="text-lg font-medium text-gray-900" data-i18n="readyTitle">Bereit zur Berechnung</h3>
+                   <p class="text-gray-500 mt-1 max-w-xs" data-i18n="readyText">Gib deine gewünschten Urlaubsdaten links ein, um die Aufschlüsselung zu sehen.</p>
+               </div>
+
+               <!-- Detailed Breakdown -->
+               <div id="breakdownSection" class="hidden space-y-4 animate-slide-up">
+                   <h3 class="text-lg font-bold text-gray-900 px-1" data-i18n="breakdownTitle">Tagesaufschlüsselung</h3>
+                   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                       <div class="max-h-[400px] overflow-y-auto" id="dayList"></div>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+   </main>
+
+   <footer class="bg-white border-t border-gray-200 mt-auto py-6">
+       <div class="max-w-5xl mx-auto px-4 text-center text-gray-400 text-sm">
+           <p data-i18n="footer">&copy; 2023-2026 MV Urlaubsrechner. Daten spezifisch für Mecklenburg-Vorpommern, Deutschland.</p>
+       </div>
+   </footer>
+
+   <script>
+       // --- Translations ---
+       const translations = {
+           de: {
+               title: "Plane deine Auszeit.",
+               subtitle: "Wähle deine Urlaubsdaten. Wir berechnen die genaue Anzahl der benötigten Urlaubstage - exklusive Wochenenden und Feiertagen in Mecklenburg-Vorpommern.",
+               startDate: "Startdatum",
+               endDate: "Enddatum",
+               calculateBtn: "Urlaubstage berechnen",
+               upcomingHolidays: "Anstehende Feiertage",
+               mvSpecific: "MV Spezifisch",
+               requiredLeave: "Benötigte Urlaubstage",
+               days: "Tage",
+               totalSpan: "Gesamtzeitraum",
+               weekends: "Wochenenden",
+               holidays: "Feiertage",
+               readyTitle: "Bereit zur Berechnung",
+               readyText: "Gib deine gewünschten Urlaubsdaten links ein, um die Aufschlüsselung zu sehen.",
+               breakdownTitle: "Tagesaufschlüsselung",
+               footer: "© 2023-2026 MV Urlaubsrechner. Daten spezifisch für Mecklenburg-Vorpommern, Deutschland.",
+               dayLabels: {
+                   leave: "Urlaub",
+                   weekend: "Wochenende",
+                   holiday: "Feiertag"
+               },
+               dateFormat: "de-DE",
+               totalSpanLabel: "Tage",
+               daysLabel: "Tage"
+           },
+           en: {
+               title: "Plan your escape.",
+               subtitle: "Select your vacation dates. We'll calculate the exact number of leave days required, excluding weekends and public holidays in Mecklenburg-Vorpommern.",
+               startDate: "Start Date",
+               endDate: "End Date",
+               calculateBtn: "Calculate Leave Days",
+               upcomingHolidays: "Upcoming Holidays",
+               mvSpecific: "MV Specific",
+               requiredLeave: "Required Leave Days",
+               days: "days",
+               totalSpan: "Total Span",
+               weekends: "Weekends",
+               holidays: "Holidays",
+               readyTitle: "Ready to calculate",
+               readyText: "Enter your desired vacation dates on the left to see the breakdown.",
+               breakdownTitle: "Day-by-Day Breakdown",
+               footer: "© 2023-2026 MV Holiday Calculator. Data specific to Mecklenburg-Vorpommern, Germany.",
+               dayLabels: {
+                   leave: "Leave",
+                   weekend: "Weekend",
+                   holiday: "Holiday"
+               },
+               dateFormat: "en-GB",
+               totalSpanLabel: "Days",
+               daysLabel: "Days"
+           }
+       };
+
+       let currentLang = 'de';
+
+       function setLanguage(lang) {
+           currentLang = lang;
+           
+           // Update buttons
+           document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+           document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+           
+           // Update all elements with data-i18n
+           document.querySelectorAll('[data-i18n]').forEach(el => {
+               const key = el.getAttribute('data-i18n');
+               if (translations[lang][key]) {
+                   el.textContent = translations[lang][key];
+               }
+           });
+           
+           // Refresh displays if results are showing
+           if (!document.getElementById('resultCard').classList.contains('hidden')) {
+               calculateHolidays();
+           } else {
+               initSidebar(); // Refresh sidebar dates
+           }
+       }
+
+       // --- Holiday Data Logic ---
+       const fixedHolidays = [
+           { day: 1, month: 1, name: "Neujahrstag" },
+           { day: 1, month: 5, name: "Tag der Arbeit" },
+           { day: 3, month: 10, name: "Tag der Deutschen Einheit" },
+           { day: 25, month: 12, name: "1. Weihnachtstag" },
+           { day: 26, month: 12, name: "2. Weihnachtstag" }
+       ];
+
+       function getEasterDate(year) {
+           const a = year % 19;
+           const b = Math.floor(year / 100);
+           const c = year % 100;
+           const d = Math.floor(b / 4);
+           const e = b % 4;
+           const f = Math.floor((b + 8) / 25);
+           const g = Math.floor((b - f + 1) / 3);
+           const h = (19 * a + b - d - g + 15) % 30;
+           const i = Math.floor(c / 4);
+           const k = c % 4;
+           const l = (32 + 2 * e + 2 * i - h - k) % 7;
+           const m = Math.floor((a + 11 * h + 22 * l) / 451);
+           const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+           const day = ((h + l - 7 * m + 114) % 31) + 1;
+           return new Date(year, month, day);
+       }
+
+       function getHolidaysForYear(year) {
+           const holidays = [];
+           const easter = getEasterDate(year);
+
+           fixedHolidays.forEach(h => {
+               holidays.push({
+                   date: new Date(year, h.month - 1, h.day),
+                   name: h.name
+               });
+           });
+
+           holidays.push({ date: new Date(easter.getFullYear(), easter.getMonth(), easter.getDate() - 2), name: "Karfreitag" });
+           holidays.push({ date: new Date(easter.getFullYear(), easter.getMonth(), easter.getDate() + 1), name: "Ostermontag" });
+           holidays.push({ date: new Date(easter.getFullYear(), easter.getMonth(), easter.getDate() + 39), name: "Christi Himmelfahrt" });
+           holidays.push({ date: new Date(easter.getFullYear(), easter.getMonth(), easter.getDate() + 50), name: "Pfingstmontag" });
+           holidays.push({ date: new Date(year, 9, 31), name: "Reformationstag" });
+
+           return holidays.sort((a, b) => a.date - b.date);
+       }
+
+       // --- UI Logic ---
+       function initSidebar() {
+           const currentYear = new Date().getFullYear();
+           document.getElementById('currentYearDisplay').textContent = currentYear;
+           const list = document.getElementById('holidayList');
+           list.innerHTML = '';
+           const holidays = getHolidaysForYear(currentYear);
+           
+           const today = new Date();
+           today.setHours(0,0,0,0);
+
+           let count = 0;
+           const dateFormat = translations[currentLang].dateFormat;
+           
+           holidays.forEach(h => {
+               if (h.date >= today && count < 5) {
+                   const dateStr = h.date.toLocaleDateString(dateFormat, { day: '2-digit', month: 'short' });
+                   const div = document.createElement('div');
+                   div.className = "flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors";
+                   div.innerHTML = `
+                       <div class="flex items-center gap-3">
+                           <div class="w-2 h-2 rounded-full bg-mv-green"></div>
+                           <span class="text-sm font-medium text-gray-700">${h.name}</span>
+                       </div>
+                       <span class="text-xs font-mono text-gray-400 bg-gray-100 px-2 py-1 rounded">${dateStr}</span>
+                   `;
+                   list.appendChild(div);
+                   count++;
+               }
+           });
+       }
+
+       function calculateHolidays() {
+           const startInput = document.getElementById('startDate').value;
+           const endInput = document.getElementById('endDate').value;
+
+           if (!startInput || !endInput) {
+               alert(currentLang === 'de' ? "Bitte wähle Start- und Enddatum." : "Please select both start and end dates.");
+               return;
+           }
+
+           let start = new Date(startInput);
+           let end = new Date(endInput);
+           start.setHours(0,0,0,0);
+           end.setHours(0,0,0,0);
+
+           if (start > end) {
+               alert(currentLang === 'de' ? "Das Enddatum muss nach dem Startdatum liegen." : "End date must be after start date.");
+               return;
+           }
+
+           const startYear = start.getFullYear();
+           const endYear = end.getFullYea
