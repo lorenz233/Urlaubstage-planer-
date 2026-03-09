@@ -14,22 +14,7 @@ Die App berechnet, wie viele Urlaubstage du zwischen Start- und Enddatum brauchs
 ## Projektstruktur
 
 - `index.html` – komplette App (UI, Logik, Feiertagsberechnung)
-
-## Lokal starten
-
-Da das Projekt ohne Build-Setup auskommt, reicht ein Browser:
-
-1. Repository klonen oder herunterladen
-2. `index.html` im Browser öffnen
-
-Optional mit lokalem Server:
-
-```bash
-python -m http.server 8000
-```
-
-Danach im Browser öffnen: `http://localhost:8000`
-
+- 
 ## Ideen für zukünftige Verbesserungen
 
 - Unterstützung für weitere Bundesländer oder Länder (wählbare Feiertagsregion)
