@@ -11,10 +11,6 @@ Die App berechnet, wie viele Urlaubstage du zwischen Start- und Enddatum brauchs
 - Tagesgenaue Aufschlüsselung (Urlaub / Wochenende / Feiertag)
 - Sprachumschaltung Deutsch/Englisch
 
-## Projektstruktur
-
-- `index.html` – komplette App (UI, Logik, Feiertagsberechnung)
-- 
 ## Ideen für zukünftige Verbesserungen
 
 - Unterstützung für weitere Bundesländer oder Länder (wählbare Feiertagsregion)
