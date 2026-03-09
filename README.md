@@ -1,5 +1,7 @@
 # Urlaubstage-Planer
 
+https://urlaubstage-planer.de/
+
 Ein einfacher Web-Urlaubsrechner für **Mecklenburg-Vorpommern (Deutschland)**.  
 Die App berechnet, wie viele Urlaubstage du zwischen Start- und Enddatum brauchst – Wochenenden und regionale Feiertage werden automatisch berücksichtigt.
 
