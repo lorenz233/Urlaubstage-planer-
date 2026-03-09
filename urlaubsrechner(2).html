@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Urlaubsrechner · Deutschland</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --bg:#eef4fb;
+      --bg2:#e4eff9;
+      --surface:#ffffff;
+      --border:#dce8f5;
+      --ink:#1a2535;
+      --ink2:#4a6080;
+      --ink3:#8aa3be;
+      --teal:#3db8a0;
+      --teal-light:#e6f7f4;
+      --teal-mid:rgba(61,184,160,0.18);
+      --red:#e05c6a;
+      --red-light:#fdeef0;
+      --red-mid:rgba(224,92,106,0.15);
+      --blue:#4a90d9;
+      --blue-light:#eaf3fc;
+      --accent:#2e7dc8;
+      --shadow:0 2px 16px rgba(30,60,100,0.08);
+      --shadow-lg:0 8px 40px rgba(30,60,100,0.12);
+      --radius:16px;
+    }
+
+    html{font-size:16px}
+    body{
+      background:var(--bg);
+      background-image:
+        radial-gradient(ellipse 60% 50% at 0% 0%,rgba(74,144,217,0.13) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 60% at 100% 100%,rgba(61,184,160,0.10) 0%,transparent 55%);
+      font-family:'Plus Jakarta Sans',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      padding:36px 20px 60px;
+    }
+
+    /* ── Header ── */
+    .page-header{text-align:center;margin-bottom:36px}
+    .page-eyebrow{
+      font-size:0.72rem;font-weight:600;letter-spacing:0.18em;
+      text-transform:uppercase;color:var(--accent);margin-bottom:6px
+    }
+    .page-title{
+      font-size:clamp(1.9rem,4vw,2.6rem);font-weight:800;
+      letter-spacing:-0.03em;color:var(--ink);line-height:1.1
+    }
+    .page-sub{font-size:0.82rem;color:var(--ink3);margin-top:6px;font-weight:500}
+
+    /* ── Layout ── */
+    .layout{
+      display:grid;
+      grid-template-columns:360px 1fr;
+      gap:24px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    /* ── Panels ── */
+    .panel{
+      background:var(--surface);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+    }
+
+    .panel-title{
+      font-size:0.68rem;font-weight:700;letter-spacing:0.15em;
+      text-transform:uppercase;color:var(--ink3);margin-bottom:20px;
+      display:flex;align-items:center;gap:8px
+    }
+    .panel-title span{
+      background:var(--blue-light);color:var(--accent);
+      border-radius:6px;padding:2px 8px;font-size:0.65rem
+    }
+
+    /* ── Form ── */
+    .field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+    .field label{
+      font-size:0.72rem;font-weight:700;letter-spacing:0.1em;
+      text-transform:uppercase;color:var(--ink2)
+    }
+    .date-input-wrap{position:relative}
+    .date-input-wrap svg{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      pointer-events:none;color:var(--ink3)
+    }
+    input[type=date]{
+      font-family:'Plus Jakarta Sans',sans-serif;
+      font-size:0.95rem;font-weight:500;
+      color:var(--ink);background:var(--bg);
+      border:1.5px solid var(--border);border-radius:10px;
+      padding:12px 44px 12px 14px;width:100%;outline:none;
+      transition:border-color .2s,box-shadow .2s;cursor:pointer;
+      -webkit-appearance:none;color-scheme:light;
+    }
+    input[type=date]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,125,200,.12)}
+    input[type=date]:hover{border-color:#b0c8e8}
+
+    /* ── Select dropdown ── */
+    .select-wrap{position:relative}
+    .select-wrap svg{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      pointer-events:none;color:var(--ink3)
+    }
+    select{
+      font-family:'Plus Jakarta Sans',sans-serif;
+      font-size:0.95rem;font-weight:500;
+      color:var(--ink);background:var(--bg);
+      border:1.5px solid var(--border);border-radius:10px;
+      padding:12px 44px 12px 14px;width:100%;outline:none;
+      appearance:none;-webkit-appearance:none;cursor:pointer;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,125,200,.12)}
+    select:hover{border-color:#b0c8e8}
+
+    /* ── Badge strip ── */
+    .mv-badge{
+      display:flex;align-items:center;gap:8px;
+      background:var(--blue-light);border:1px solid #c5daf5;
+      border-radius:10px;padding:10px 14px;margin-bottom:18px;
+      font-size:0.8rem;color:var(--accent);font-weight:600
+    }
+
+    /* ── Calc button ── */
+    .btn{
+      font-family:'Plus Jakarta Sans',sans-serif;
+      font-size:0.88rem;font-weight:700;letter-spacing:0.05em;
+      background:linear-gradient(135deg,#3a9fd8 0%,#2563b0 100%);
+      color:#fff;border:none;border-radius:10px;
+      padding:14px 20px;width:100%;cursor:pointer;
+      box-shadow:0 4px 18px rgba(46,125,200,.3);
+      transition:opacity .2s,transform .15s,box-shadow .2s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      margin-top:4px
+    }
+    .btn:hover{opacity:.9;box-shadow:0 6px 24px rgba(46,125,200,.4)}
+    .btn:active{transform:scale(.975)}
+
+    /* ── Error ── */
+    .error{
+      margin-top:14px;background:var(--red-light);
+      border:1px solid rgba(224,92,106,.25);color:var(--red);
+      font-size:.8rem;border-radius:8px;padding:10px 14px;display:none
+    }
+
+    /* ── Right panel placeholder ── */
+    .right-panel{display:flex;flex-direction:column;gap:16px}
+
+    .placeholder-hint{
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;flex:1;
+      background:var(--surface);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:48px 24px;text-align:center;
+      min-height:300px
+    }
+    .placeholder-hint .icon{font-size:3rem;margin-bottom:16px;opacity:.4}
+    .placeholder-hint p{font-size:.88rem;color:var(--ink3);font-weight:500}
+
+    /* ── Stats grid ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .stat-card{
+      background:var(--surface);border-radius:12px;
+      box-shadow:var(--shadow);padding:16px 14px;text-align:center;
+      border:1.5px solid transparent;transition:border-color .2s
+    }
+    .stat-card.s-total{border-color:var(--border)}
+    .stat-card.s-vacation{border-color:rgba(61,184,160,.3);background:var(--teal-light)}
+    .stat-card.s-weekend{border-color:var(--border)}
+    .stat-card.s-holiday{border-color:rgba(224,92,106,.25);background:var(--red-light)}
+
+    .stat-icon{font-size:1.3rem;margin-bottom:6px}
+    .stat-label{
+      font-size:.62rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--ink3);margin-bottom:6px;line-height:1.3
+    }
+    .stat-value{
+      font-size:1.8rem;font-weight:800;line-height:1;
+      color:var(--ink)
+    }
+    .stat-card.s-vacation .stat-value{color:var(--teal)}
+    .stat-card.s-holiday  .stat-value{color:var(--red)}
+    .stat-unit{font-size:.7rem;color:var(--ink3);margin-top:3px;font-weight:600}
+
+    /* ── Bottom split: calendar + holiday list ── */
+    .bottom-split{display:grid;grid-template-columns:1fr 260px;gap:16px}
+
+    /* ── Calendar ── */
+    .cal-panel{
+      background:var(--surface);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:22px;overflow:hidden
+    }
+    .cal-months{display:flex;flex-direction:column;gap:24px}
+    .cal-month{}
+    .cal-month-title{
+      font-size:.8rem;font-weight:800;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--ink2);margin-bottom:10px;
+      display:flex;align-items:center;gap:8px
+    }
+    .cal-grid{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:3px
+    }
+    .cal-dow{
+      font-size:.6rem;font-weight:700;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--ink3);
+      text-align:center;padding:4px 0
+    }
+    .cal-dow.weekend{color:var(--red)}
+    .cal-day{
+      border-radius:6px;padding:5px 2px;text-align:center;
+      font-size:.78rem;font-weight:500;color:var(--ink2);
+      position:relative;min-height:30px;display:flex;
+      align-items:center;justify-content:center;flex-direction:column;
+      transition:background .15s;line-height:1.1
+    }
+    .cal-day.empty{background:transparent}
+    .cal-day.weekend{color:var(--ink3)}
+    .cal-day.in-range{background:var(--teal-mid);color:var(--ink);font-weight:600}
+    .cal-day.holiday{background:var(--red-mid);color:var(--red);font-weight:700}
+    .cal-day.weekend.in-range{background:rgba(180,200,220,.18);color:var(--ink3)}
+    .cal-day.today::after{
+      content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+      width:4px;height:4px;border-radius:50%;background:var(--accent)
+    }
+
+    /* ── Holiday list ── */
+    .hol-panel{
+      background:var(--surface);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:22px;
+    }
+    .hol-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+    .hol-item{
+      display:flex;align-items:flex-start;gap:10px;
+      padding:9px 10px;border-radius:8px;
+      background:var(--red-light);border:1px solid rgba(224,92,106,.15)
+    }
+    .hol-dot{
+      width:7px;height:7px;border-radius:50%;background:var(--red);
+      flex-shrink:0;margin-top:4px
+    }
+    .hol-info{}
+    .hol-date{font-size:.7rem;font-weight:700;color:var(--red);letter-spacing:.02em}
+    .hol-name{font-size:.75rem;color:var(--ink2);margin-top:1px}
+    .hol-empty{
+      font-size:.8rem;color:var(--teal);font-weight:600;
+      display:flex;align-items:center;gap:6px;padding:10px 0
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:900px){
+      .layout{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .bottom-split{grid-template-columns:1fr}
+    }
+    @media(max-width:480px){
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      body{padding:20px 12px 40px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-eyebrow">✈️ Vacation Planner</div>
+  <div class="page-title">Dein Urlaubs-Manager</div>
+  <div class="page-sub">Alle 16 Bundesländer · Feiertage automatisch berücksichtigt</div>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT: Input -->
+  <div>
+    <div class="panel">
+      <div class="panel-title">🗓️ Schritt 1: Daten eingeben <span id="bl-badge">MV</span></div>
+
+      <div class="field">
+        <label>Bundesland</label>
+        <div class="select-wrap">
+          <select id="bundesland">
+            <option value="BB">Brandenburg</option>
+            <option value="BE">Berlin</option>
+            <option value="BW">Baden-Württemberg</option>
+            <option value="BY">Bayern</option>
+            <option value="HB">Bremen</option>
+            <option value="HE">Hessen</option>
+            <option value="HH">Hamburg</option>
+            <option value="MV" selected>Mecklenburg-Vorpommern</option>
+            <option value="NI">Niedersachsen</option>
+            <option value="NW">Nordrhein-Westfalen</option>
+            <option value="RP">Rheinland-Pfalz</option>
+            <option value="SH">Schleswig-Holstein</option>
+            <option value="SL">Saarland</option>
+            <option value="SN">Sachsen</option>
+            <option value="ST">Sachsen-Anhalt</option>
+            <option value="TH">Thüringen</option>
+          </select>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Startdatum</label>
+        <div class="date-input-wrap">
+          <input type="date" id="start"/>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Enddatum</label>
+        <div class="date-input-wrap">
+          <input type="date" id="end"/>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+      </div>
+
+      <button class="btn" onclick="calculate()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Urlaub berechnen
+      </button>
+      <div class="error" id="error"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Results -->
+  <div class="right-panel" id="right-panel">
+    <div class="placeholder-hint" id="placeholder">
+      <div class="icon">🏖️</div>
+      <p>Wähle einen Zeitraum und klicke auf<br/><strong>„Urlaub berechnen"</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Helpers ────────────────────────────────────────────────────────────────
+function getEaster(y){
+  const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4;
+  const f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
+  const i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
+  const m=Math.floor((a+11*h+22*l)/451);
+  return new Date(y,Math.floor((h+l-7*m+114)/31)-1,(h+l-7*m+114)%31+1);
+}
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function toKey(d){return d.toISOString().slice(0,10);}
+
+// ── Holiday data per Bundesland ────────────────────────────────────────────
+// Each function returns {dateKey: "Feiertagsname"}
+function getHolidays(bl, y){
+  const e=getEaster(y), h={};
+  const a=(d,name)=>{h[toKey(d)]=name;};
+
+  // Bundesweite Feiertage (alle Länder)
+  a(new Date(y,0,1),   "Neujahr");
+  a(addDays(e,-2),     "Karfreitag");
+  a(addDays(e,0),      "Ostersonntag");
+  a(addDays(e,1),      "Ostermontag");
+  a(new Date(y,4,1),   "Tag der Arbeit");
+  a(addDays(e,39),     "Christi Himmelfahrt");
+  a(addDays(e,49),     "Pfingstsonntag");
+  a(addDays(e,50),     "Pfingstmontag");
+  a(new Date(y,9,3),   "Tag der Deutschen Einheit");
+  a(new Date(y,11,25), "1. Weihnachtstag");
+  a(new Date(y,11,26), "2. Weihnachtstag");
+
+  // Landesspezifische Feiertage
+  switch(bl){
+    case 'BW':
+      a(addDays(e,60),     "Fronleichnam");
+      a(new Date(y,0,6),   "Heilige Drei Könige");
+      a(new Date(y,10,1),  "Allerheiligen");
+      break;
+    case 'BY':
+      a(addDays(e,60),     "Fronleichnam");
+      a(new Date(y,0,6),   "Heilige Drei Könige");
+      a(new Date(y,7,15),  "Mariä Himmelfahrt");
+      a(new Date(y,10,1),  "Allerheiligen");
+      break;
+    case 'BE':
+      a(new Date(y,4,8),   "Tag der Befreiung"); // seit 2025
+      break;
+    case 'BB':
+      a(addDays(e,-46),    "Reformationssonntag (Bußtag-Region)");
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'HB':
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'HH':
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'HE':
+      a(addDays(e,60),     "Fronleichnam");
+      break;
+    case 'MV':
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'NI':
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'NW':
+      a(addDays(e,60),     "Fronleichnam");
+      a(new Date(y,10,1),  "Allerheiligen");
+      break;
+    case 'RP':
+      a(addDays(e,60),     "Fronleichnam");
+      a(new Date(y,10,1),  "Allerheiligen");
+      break;
+    case 'SL':
+      a(addDays(e,60),     "Fronleichnam");
+      a(new Date(y,7,15),  "Mariä Himmelfahrt");
+      a(new Date(y,10,1),  "Allerheiligen");
+      break;
+    case 'SN':
+      a(new Date(y,9,31),  "Reformationstag");
+      // Buß- und Bettag: Mittwoch vor dem 23. November
+      a(getBussUndBettag(y),"Buß- und Bettag");
+      break;
+    case 'ST':
+      a(new Date(y,0,6),   "Heilige Drei Könige");
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'SH':
+      a(new Date(y,9,31),  "Reformationstag");
+      break;
+    case 'TH':
+      a(new Date(y,9,31),  "Reformationstag");
+      a(new Date(y,8,20),  "Weltkindertag");
+      break;
+  }
+  return h;
+}
+
+function getBussUndBettag(y){
+  // Mittwoch vor dem 23. November
+  const nov23=new Date(y,10,23);
+  const dow=nov23.getDay(); // 0=So
+  // Tage zurück bis Mittwoch (3)
+  const diff=(dow>=3)?(dow-3):(dow+4);
+  return addDays(nov23,-diff);
+}
+
+const BL_NAMES={
+  BB:"Brandenburg",BE:"Berlin",BW:"Baden-Württemberg",BY:"Bayern",
+  HB:"Bremen",HE:"Hessen",HH:"Hamburg",MV:"Mecklenburg-Vorpommern",
+  NI:"Niedersachsen",NW:"Nordrhein-Westfalen",RP:"Rheinland-Pfalz",
+  SH:"Schleswig-Holstein",SL:"Saarland",SN:"Sachsen",ST:"Sachsen-Anhalt",TH:"Thüringen"
+};
+
+const DE_MONTHS=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const fmtShort=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+
+// Update badge when dropdown changes
+document.getElementById('bundesland').addEventListener('change',function(){
+  document.getElementById('bl-badge').textContent=this.value;
+});
+
+// ── Main calculation ───────────────────────────────────────────────────────
+function calculate(){
+  const sv=document.getElementById('start').value;
+  const ev=document.getElementById('end').value;
+  const bl=document.getElementById('bundesland').value;
+  const errEl=document.getElementById('error');
+  errEl.style.display='none';
+
+  if(!sv||!ev){showError("Bitte beide Daten auswählen.");return;}
+  const start=new Date(sv+'T00:00:00');
+  const end=new Date(ev+'T00:00:00');
+  if(end<start){showError("Das Enddatum muss nach dem Startdatum liegen.");return;}
+
+  const years=new Set();
+  let cur=new Date(start);
+  while(cur<=end){years.add(cur.getFullYear());cur.setDate(cur.getDate()+1);}
+  const allH={};
+  years.forEach(y=>Object.assign(allH,getHolidays(bl,y)));
+
+  let total=0,weekends=0,hols=0,vacation=0;
+  const hitH=[];
+  cur=new Date(start);
+  while(cur<=end){
+    total++;
+    const dow=cur.getDay(),key=toKey(cur);
+    if(dow===0||dow===6) weekends++;
+    else if(allH[key]){hols++;hitH.push({date:new Date(cur),name:allH[key]});}
+    else vacation++;
+    cur.setDate(cur.getDate()+1);
+  }
+
+  renderResults({start,end,total,weekends,hols,vacation,hitH,allH,bl});
+}
+
+function showError(msg){
+  const el=document.getElementById('error');
+  el.textContent=msg;el.style.display='block';
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function renderResults({start,end,total,weekends,hols,vacation,hitH,allH,bl}){
+  const rp=document.getElementById('right-panel');
+
+  const statsHTML=`
+  <div class="stats-grid">
+    <div class="stat-card s-total">
+      <div class="stat-icon">📅</div>
+      <div class="stat-label">Gesamt-<br>zeitraum</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-unit">Tage</div>
+    </div>
+    <div class="stat-card s-vacation">
+      <div class="stat-icon">🧳</div>
+      <div class="stat-label">Benötigte<br>Urlaubstage</div>
+      <div class="stat-value">${vacation}</div>
+      <div class="stat-unit">Arbeitstage</div>
+    </div>
+    <div class="stat-card s-weekend">
+      <div class="stat-icon">😴</div>
+      <div class="stat-label">Wochen-<br>enden</div>
+      <div class="stat-value">${weekends}</div>
+      <div class="stat-unit">Tage</div>
+    </div>
+    <div class="stat-card s-holiday">
+      <div class="stat-icon">🎉</div>
+      <div class="stat-label">Feiertage<br>&nbsp;</div>
+      <div class="stat-value">${hols}</div>
+      <div class="stat-unit">Tage</div>
+    </div>
+  </div>`;
+
+  const calHTML=buildCalendar(start,end,allH,bl);
+
+  const holListHTML=`
+  <div class="hol-panel">
+    <div class="panel-title">🎉 Feiertage</div>
+    <div class="hol-list">
+      ${hitH.length===0
+        ? `<div class="hol-empty">✅ Keine Feiertage</div>`
+        : hitH.map(h=>`
+          <div class="hol-item">
+            <div class="hol-dot"></div>
+            <div class="hol-info">
+              <div class="hol-date">${fmtShort.format(h.date)}</div>
+              <div class="hol-name">${h.name}</div>
+            </div>
+          </div>`).join('')}
+    </div>
+  </div>`;
+
+  rp.innerHTML=`
+    ${statsHTML}
+    <div class="bottom-split">
+      ${calHTML}
+      ${holListHTML}
+    </div>`;
+}
+
+// ── Calendar builder ───────────────────────────────────────────────────────
+function buildCalendar(start,end,allH,bl){
+  const months=[];
+  const seen=new Set();
+  let cur=new Date(start.getFullYear(),start.getMonth(),1);
+  const endMonth=new Date(end.getFullYear(),end.getMonth(),1);
+  while(cur<=endMonth){
+    const key=`${cur.getFullYear()}-${cur.getMonth()}`;
+    if(!seen.has(key)){seen.add(key);months.push(new Date(cur));}
+    cur.setMonth(cur.getMonth()+1);
+  }
+
+  const today=toKey(new Date());
+
+  const monthsHTML=months.map(m=>{
+    const y=m.getFullYear(),mo=m.getMonth();
+    const firstDow=(new Date(y,mo,1).getDay()+6)%7;
+    const daysInMonth=new Date(y,mo+1,0).getDate();
+
+    let cells='';
+    for(let i=0;i<firstDow;i++) cells+=`<div class="cal-day empty"></div>`;
+    for(let d=1;d<=daysInMonth;d++){
+      const date=new Date(y,mo,d);
+      const key=toKey(date);
+      const dow=date.getDay();
+      const inRange=date>=start&&date<=end;
+      const isHol=!!allH[key];
+      const isWe=dow===0||dow===6;
+      const isToday=key===today;
+
+      let cls='cal-day';
+      if(isWe) cls+=' weekend';
+      if(inRange&&!isWe) cls+=' in-range';
+      if(inRange&&isHol&&!isWe) cls+=' holiday';
+      if(isWe&&inRange) cls+=' in-range';
+      if(isToday) cls+=' today';
+
+      const title=isHol?allH[key]:'';
+      cells+=`<div class="${cls}" title="${title}">${d}${isHol&&inRange&&!isWe?'<br><span style="font-size:.5rem;line-height:1;display:block">●</span>':''}</div>`;
+    }
+
+    const dowHeaders=['Mo','Di','Mi','Do','Fr','Sa','So'].map((d,i)=>
+      `<div class="cal-dow${i>=5?' weekend':''}">${d}</div>`).join('');
+
+    return `
+      <div class="cal-month">
+        <div class="cal-month-title">📅 ${DE_MONTHS[mo]} ${y}</div>
+        <div class="cal-grid">${dowHeaders}${cells}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="cal-panel">
+      <div class="panel-title">🗓️ Schritt 2: Deine Übersicht <span style="font-size:.65rem;background:var(--blue-light);color:var(--accent);border-radius:6px;padding:2px 8px;">${BL_NAMES[bl]||bl}</span></div>
+      <div class="cal-months">${monthsHTML}</div>
+      <div style="margin-top:16px;display:flex;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
+          <div style="width:14px;height:14px;border-radius:4px;background:var(--teal-mid);border:1px solid rgba(61,184,160,.3)"></div>Urlaubstag
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
+          <div style="width:14px;height:14px;border-radius:4px;background:var(--red-mid);border:1px solid rgba(224,92,106,.2)"></div>Feiertag
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
+          <div style="width:14px;height:14px;border-radius:4px;background:rgba(180,200,220,.18);border:1px solid var(--border)"></div>Wochenende
+        </div>
+      </div>
+    </div>`;
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+</script>
+</body>
+</html>
