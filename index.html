@@ -4,63 +4,79 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Urlaubsrechner · Deutschland</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
     :root{
-      --bg:#eef4fb;
-      --bg2:#e4eff9;
+      --bg:#f1f3f4;
+      --bg2:#e8eaed;
       --surface:#ffffff;
-      --border:#dce8f5;
-      --ink:#1a2535;
-      --ink2:#4a6080;
-      --ink3:#8aa3be;
-      --teal:#3db8a0;
-      --teal-light:#e6f7f4;
-      --teal-mid:rgba(61,184,160,0.18);
-      --red:#e05c6a;
-      --red-light:#fdeef0;
-      --red-mid:rgba(224,92,106,0.15);
-      --blue:#4a90d9;
-      --blue-light:#eaf3fc;
-      --accent:#2e7dc8;
-      --shadow:0 2px 16px rgba(30,60,100,0.08);
-      --shadow-lg:0 8px 40px rgba(30,60,100,0.12);
-      --radius:16px;
+      --border:#dadce0;
+      --ink:#3c4043;
+      --ink2:#5f6368;
+      --ink3:#80868b;
+      --teal:#0f9d58;
+      --teal-light:#e6f4ea;
+      --teal-mid:rgba(15,157,88,0.12);
+      --red:#d93025;
+      --red-light:#fce8e6;
+      --red-mid:rgba(217,48,37,0.10);
+      --blue:#1a73e8;
+      --blue-light:#e8f0fe;
+      --blue-mid:rgba(26,115,232,0.12);
+      --accent:#1a73e8;
+      --shadow:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+      --shadow-lg:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);
+      --radius:8px;
     }
 
     html{font-size:16px}
     body{
       background:var(--bg);
-      background-image:
-        radial-gradient(ellipse 60% 50% at 0% 0%,rgba(74,144,217,0.13) 0%,transparent 55%),
-        radial-gradient(ellipse 50% 60% at 100% 100%,rgba(61,184,160,0.10) 0%,transparent 55%);
-      font-family:'Plus Jakarta Sans',sans-serif;
+      font-family:'Roboto',sans-serif;
       color:var(--ink);
       min-height:100vh;
-      padding:36px 20px 60px;
+      padding:0 0 60px;
     }
 
     /* ── Header ── */
-    .page-header{text-align:center;margin-bottom:36px}
-    .page-eyebrow{
-      font-size:0.72rem;font-weight:600;letter-spacing:0.18em;
-      text-transform:uppercase;color:var(--accent);margin-bottom:6px
+    .page-header{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:0 24px;
+      height:64px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:24px;
+      box-shadow:0 1px 3px rgba(60,64,67,.15);
+    }
+    .page-eyebrow{display:none}
+    .header-icon{
+      width:36px;height:36px;
+      background:var(--accent);
+      border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;flex-shrink:0;
     }
     .page-title{
-      font-size:clamp(1.9rem,4vw,2.6rem);font-weight:800;
-      letter-spacing:-0.03em;color:var(--ink);line-height:1.1
+      font-size:1.375rem;font-weight:400;
+      color:var(--ink);letter-spacing:0;line-height:1;
     }
-    .page-sub{font-size:0.82rem;color:var(--ink3);margin-top:6px;font-weight:500}
+    .page-sub{
+      font-size:0.8rem;color:var(--ink3);
+      margin-left:auto;font-weight:400;white-space:nowrap;
+    }
 
     /* ── Layout ── */
     .layout{
       display:grid;
-      grid-template-columns:360px 1fr;
-      gap:24px;
-      max-width:1100px;
+      grid-template-columns:300px 1fr;
+      gap:20px;
+      max-width:1120px;
       margin:0 auto;
+      padding:0 24px;
     }
 
     /* ── Panels ── */
@@ -68,164 +84,154 @@
       background:var(--surface);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      padding:28px;
+      padding:24px;
+      border:1px solid var(--border);
     }
 
     .panel-title{
-      font-size:0.68rem;font-weight:700;letter-spacing:0.15em;
-      text-transform:uppercase;color:var(--ink3);margin-bottom:20px;
+      font-size:0.6875rem;font-weight:500;letter-spacing:.07em;
+      text-transform:uppercase;color:var(--ink2);margin-bottom:20px;
       display:flex;align-items:center;gap:8px
     }
     .panel-title span{
       background:var(--blue-light);color:var(--accent);
-      border-radius:6px;padding:2px 8px;font-size:0.65rem
+      border-radius:4px;padding:2px 8px;font-size:0.625rem;font-weight:500
     }
 
     /* ── Form ── */
-    .field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
     .field label{
-      font-size:0.72rem;font-weight:700;letter-spacing:0.1em;
+      font-size:0.6875rem;font-weight:500;letter-spacing:.07em;
       text-transform:uppercase;color:var(--ink2)
     }
     .date-input-wrap{position:relative}
     .date-input-wrap svg{
-      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      position:absolute;right:12px;top:50%;transform:translateY(-50%);
       pointer-events:none;color:var(--ink3)
     }
     input[type=date]{
-      font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:0.95rem;font-weight:500;
-      color:var(--ink);background:var(--bg);
-      border:1.5px solid var(--border);border-radius:10px;
-      padding:12px 44px 12px 14px;width:100%;outline:none;
-      transition:border-color .2s,box-shadow .2s;cursor:pointer;
+      font-family:'Roboto',sans-serif;
+      font-size:0.875rem;font-weight:400;
+      color:var(--ink);background:var(--surface);
+      border:1px solid var(--border);border-radius:4px;
+      padding:10px 40px 10px 12px;width:100%;outline:none;
+      transition:border-color .15s,box-shadow .15s;cursor:pointer;
       -webkit-appearance:none;color-scheme:light;
     }
-    input[type=date]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,125,200,.12)}
-    input[type=date]:hover{border-color:#b0c8e8}
+    input[type=date]:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--blue-mid)}
+    input[type=date]:hover:not(:focus){border-color:var(--ink3)}
 
     /* ── Select dropdown ── */
     .select-wrap{position:relative}
     .select-wrap svg{
-      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      position:absolute;right:12px;top:50%;transform:translateY(-50%);
       pointer-events:none;color:var(--ink3)
     }
     select{
-      font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:0.95rem;font-weight:500;
-      color:var(--ink);background:var(--bg);
-      border:1.5px solid var(--border);border-radius:10px;
-      padding:12px 44px 12px 14px;width:100%;outline:none;
+      font-family:'Roboto',sans-serif;
+      font-size:0.875rem;font-weight:400;
+      color:var(--ink);background:var(--surface);
+      border:1px solid var(--border);border-radius:4px;
+      padding:10px 40px 10px 12px;width:100%;outline:none;
       appearance:none;-webkit-appearance:none;cursor:pointer;
-      transition:border-color .2s,box-shadow .2s;
+      transition:border-color .15s,box-shadow .15s;
     }
-    select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,125,200,.12)}
-    select:hover{border-color:#b0c8e8}
+    select:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--blue-mid)}
+    select:hover:not(:focus){border-color:var(--ink3)}
 
     /* ── Badge strip ── */
     .mv-badge{
       display:flex;align-items:center;gap:8px;
-      background:var(--blue-light);border:1px solid #c5daf5;
-      border-radius:10px;padding:10px 14px;margin-bottom:18px;
-      font-size:0.8rem;color:var(--accent);font-weight:600
+      background:var(--blue-light);border:1px solid rgba(26,115,232,.2);
+      border-radius:4px;padding:8px 12px;margin-bottom:16px;
+      font-size:0.75rem;color:var(--accent);font-weight:500
     }
 
     /* ── Calc button ── */
     .btn{
-      font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:0.88rem;font-weight:700;letter-spacing:0.05em;
-      background:linear-gradient(135deg,#3a9fd8 0%,#2563b0 100%);
-      color:#fff;border:none;border-radius:10px;
-      padding:14px 20px;width:100%;cursor:pointer;
-      box-shadow:0 4px 18px rgba(46,125,200,.3);
-      transition:opacity .2s,transform .15s,box-shadow .2s;
+      font-family:'Roboto',sans-serif;
+      font-size:0.875rem;font-weight:500;letter-spacing:.01em;
+      background:var(--accent);
+      color:#fff;border:none;border-radius:4px;
+      padding:10px 24px;width:100%;cursor:pointer;
+      box-shadow:0 1px 3px rgba(26,115,232,.4);
+      transition:background .15s,box-shadow .15s;
       display:flex;align-items:center;justify-content:center;gap:8px;
       margin-top:4px
     }
-    .btn:hover{opacity:.9;box-shadow:0 6px 24px rgba(46,125,200,.4)}
-    .btn:active{transform:scale(.975)}
+    .btn:hover{background:#1765cc;box-shadow:0 2px 6px rgba(26,115,232,.45)}
+    .btn:active{background:#1557b0;box-shadow:none}
 
     /* ── Error ── */
     .error{
-      margin-top:14px;background:var(--red-light);
-      border:1px solid rgba(224,92,106,.25);color:var(--red);
-      font-size:.8rem;border-radius:8px;padding:10px 14px;display:none
+      margin-top:12px;background:var(--red-light);
+      border:1px solid rgba(217,48,37,.2);color:var(--red);
+      font-size:.8rem;border-radius:4px;padding:10px 14px;display:none
     }
 
-    /* ── Right panel placeholder ── */
+    /* ── Right panel ── */
     .right-panel{display:flex;flex-direction:column;gap:16px}
-
-    .placeholder-hint{
-      display:flex;flex-direction:column;align-items:center;
-      justify-content:center;flex:1;
-      background:var(--surface);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:48px 24px;text-align:center;
-      min-height:300px
-    }
-    .placeholder-hint .icon{font-size:3rem;margin-bottom:16px;opacity:.4}
-    .placeholder-hint p{font-size:.88rem;color:var(--ink3);font-weight:500}
 
     /* ── Stats grid ── */
     .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
     .stat-card{
-      background:var(--surface);border-radius:12px;
-      box-shadow:var(--shadow);padding:16px 14px;text-align:center;
-      border:1.5px solid transparent;transition:border-color .2s
+      background:var(--surface);border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);padding:16px;text-align:left;
+      border-top:3px solid var(--border);
     }
-    .stat-card.s-total{border-color:var(--border)}
-    .stat-card.s-vacation{border-color:rgba(61,184,160,.3);background:var(--teal-light)}
-    .stat-card.s-weekend{border-color:var(--border)}
-    .stat-card.s-holiday{border-color:rgba(224,92,106,.25);background:var(--red-light)}
+    .stat-card.s-total  {border-top-color:var(--ink3)}
+    .stat-card.s-vacation{border-top-color:var(--teal)}
+    .stat-card.s-weekend {border-top-color:var(--blue)}
+    .stat-card.s-holiday {border-top-color:var(--red)}
 
-    .stat-icon{font-size:1.3rem;margin-bottom:6px}
+    .stat-icon{font-size:1.1rem;margin-bottom:8px}
     .stat-label{
-      font-size:.62rem;font-weight:700;letter-spacing:.1em;
-      text-transform:uppercase;color:var(--ink3);margin-bottom:6px;line-height:1.3
+      font-size:.6875rem;font-weight:500;letter-spacing:.05em;
+      text-transform:uppercase;color:var(--ink3);margin-bottom:4px;line-height:1.3
     }
     .stat-value{
-      font-size:1.8rem;font-weight:800;line-height:1;
+      font-size:2rem;font-weight:300;line-height:1;
       color:var(--ink)
     }
     .stat-card.s-vacation .stat-value{color:var(--teal)}
     .stat-card.s-holiday  .stat-value{color:var(--red)}
-    .stat-unit{font-size:.7rem;color:var(--ink3);margin-top:3px;font-weight:600}
+    .stat-unit{font-size:.6875rem;color:var(--ink3);margin-top:3px;font-weight:400}
 
     /* ── Bottom split: calendar + holiday list ── */
-    .bottom-split{display:grid;grid-template-columns:1fr 260px;gap:16px}
+    .bottom-split{display:grid;grid-template-columns:1fr 220px;gap:16px}
 
     /* ── Calendar ── */
     .cal-panel{
       background:var(--surface);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:22px;overflow:hidden
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);padding:20px;overflow:hidden
     }
     .cal-months{display:flex;flex-direction:column;gap:24px}
-    .cal-month{}
     .cal-month-title{
-      font-size:.8rem;font-weight:800;letter-spacing:.06em;
-      text-transform:uppercase;color:var(--ink2);margin-bottom:10px;
+      font-size:.8rem;font-weight:500;
+      color:var(--ink2);margin-bottom:10px;
       display:flex;align-items:center;gap:8px
     }
-    .cal-grid{
-      display:grid;grid-template-columns:repeat(7,1fr);gap:3px
-    }
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
     .cal-dow{
-      font-size:.6rem;font-weight:700;letter-spacing:.08em;
+      font-size:.625rem;font-weight:500;letter-spacing:.05em;
       text-transform:uppercase;color:var(--ink3);
       text-align:center;padding:4px 0
     }
     .cal-dow.weekend{color:var(--red)}
     .cal-day{
-      border-radius:6px;padding:5px 2px;text-align:center;
-      font-size:.78rem;font-weight:500;color:var(--ink2);
-      position:relative;min-height:30px;display:flex;
+      border-radius:4px;padding:5px 2px;text-align:center;
+      font-size:.75rem;font-weight:400;color:var(--ink2);
+      position:relative;min-height:28px;display:flex;
       align-items:center;justify-content:center;flex-direction:column;
-      transition:background .15s;line-height:1.1
+      transition:background .1s;line-height:1.1
     }
     .cal-day.empty{background:transparent}
     .cal-day.weekend{color:var(--ink3)}
-    .cal-day.in-range{background:var(--teal-mid);color:var(--ink);font-weight:600}
-    .cal-day.holiday{background:var(--red-mid);color:var(--red);font-weight:700}
-    .cal-day.weekend.in-range{background:rgba(180,200,220,.18);color:var(--ink3)}
+    .cal-day.in-range{background:var(--teal-mid);color:var(--ink);font-weight:500}
+    .cal-day.holiday{background:var(--red-mid);color:var(--red);font-weight:500}
+    .cal-day.weekend.in-range{background:var(--blue-mid);color:var(--ink3)}
     .cal-day.today::after{
       content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
       width:4px;height:4px;border-radius:50%;background:var(--accent)
@@ -234,24 +240,58 @@
     /* ── Holiday list ── */
     .hol-panel{
       background:var(--surface);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:22px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);padding:20px;
     }
-    .hol-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+    .hol-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
     .hol-item{
-      display:flex;align-items:flex-start;gap:10px;
-      padding:9px 10px;border-radius:8px;
-      background:var(--red-light);border:1px solid rgba(224,92,106,.15)
+      display:flex;align-items:flex-start;gap:0;
+      padding:8px 10px;border-radius:4px;
+      background:var(--red-light);border-left:3px solid var(--red)
     }
-    .hol-dot{
-      width:7px;height:7px;border-radius:50%;background:var(--red);
-      flex-shrink:0;margin-top:4px
-    }
-    .hol-info{}
-    .hol-date{font-size:.7rem;font-weight:700;color:var(--red);letter-spacing:.02em}
+    .hol-dot{display:none}
+    .hol-date{font-size:.6875rem;font-weight:500;color:var(--red);letter-spacing:.01em}
     .hol-name{font-size:.75rem;color:var(--ink2);margin-top:1px}
     .hol-empty{
-      font-size:.8rem;color:var(--teal);font-weight:600;
-      display:flex;align-items:center;gap:6px;padding:10px 0
+      font-size:.8rem;color:var(--teal);font-weight:500;
+      display:flex;align-items:center;gap:6px;padding:8px 0
+    }
+
+    /* ── Brückentage panel ── */
+    .bruecken-panel{display:flex;flex-direction:column;gap:0}
+    .bruecken-subtitle{font-size:.8rem;color:var(--ink3);margin-bottom:20px;font-weight:400}
+    .bruecken-list{display:flex;flex-direction:column;gap:10px;max-height:600px;overflow-y:auto;padding-right:6px}
+    .bruecken-item{
+      padding:16px 18px;border-radius:8px;
+      background:var(--surface);border:1px solid var(--border);
+      border-left:4px solid var(--border);
+      transition:box-shadow .15s;
+    }
+    .bruecken-item:hover{box-shadow:var(--shadow)}
+    .bruecken-item.has-bridge{border-left-color:var(--teal);background:var(--teal-light)}
+    .bruecken-item.long-weekend{border-left-color:var(--blue);background:var(--blue-light)}
+    .bruecken-item.weekend-hol{opacity:.45}
+    .bruecken-date{font-size:.6875rem;font-weight:500;letter-spacing:.03em;color:var(--ink3);margin-bottom:4px}
+    .bruecken-item.has-bridge .bruecken-date{color:var(--teal)}
+    .bruecken-item.long-weekend .bruecken-date{color:var(--accent)}
+    .bruecken-name{font-size:.9375rem;font-weight:500;color:var(--ink);line-height:1.3}
+    .bridge-badge{
+      display:flex;align-items:flex-start;gap:7px;
+      margin-top:10px;padding:8px 12px;
+      background:rgba(15,157,88,.1);border-radius:6px;
+      font-size:.8rem;color:var(--teal);font-weight:500;line-height:1.5
+    }
+    .long-badge{
+      display:flex;align-items:flex-start;gap:7px;
+      margin-top:10px;padding:8px 12px;
+      background:rgba(26,115,232,.08);border-radius:6px;
+      font-size:.8rem;color:var(--accent);font-weight:500;line-height:1.5
+    }
+    .weekend-badge{
+      display:flex;align-items:flex-start;gap:7px;
+      margin-top:10px;padding:8px 12px;
+      background:rgba(128,134,139,.08);border-radius:6px;
+      font-size:.8rem;color:var(--ink3);font-weight:500;line-height:1.5
     }
 
     /* ── Responsive ── */
@@ -259,18 +299,20 @@
       .layout{grid-template-columns:1fr}
       .stats-grid{grid-template-columns:repeat(2,1fr)}
       .bottom-split{grid-template-columns:1fr}
+      .page-sub{display:none}
     }
     @media(max-width:480px){
       .stats-grid{grid-template-columns:repeat(2,1fr)}
-      body{padding:20px 12px 40px}
+      body{padding:0 0 40px}
+      .layout{padding:0 12px}
     }
   </style>
 </head>
 <body>
 
 <div class="page-header">
-  <div class="page-eyebrow">✈️ Vacation Planner</div>
-  <div class="page-title">Dein Urlaubs-Manager</div>
+  <div class="header-icon">✈️</div>
+  <div class="page-title">Urlaubs-Manager</div>
   <div class="page-sub">Alle 16 Bundesländer · Feiertage automatisch berücksichtigt</div>
 </div>
 
@@ -332,10 +374,7 @@
 
   <!-- RIGHT: Results -->
   <div class="right-panel" id="right-panel">
-    <div class="placeholder-hint" id="placeholder">
-      <div class="icon">🏖️</div>
-      <p>Wähle einen Zeitraum und klicke auf<br/><strong>„Urlaub berechnen"</strong></p>
-    </div>
+    <!-- filled by renderBrueckentagePanel() on load -->
   </div>
 
 </div>
@@ -458,9 +497,68 @@ const BL_NAMES={
 const DE_MONTHS=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 const fmtShort=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
 
-// Update badge when dropdown changes
+// ── Brückentage overview ───────────────────────────────────────────────────
+function renderBrueckentagePanel(bl){
+  const rp=document.getElementById('right-panel');
+  const today=new Date(); today.setHours(0,0,0,0);
+  const yr=today.getFullYear();
+
+  const allH=Object.assign({},getHolidays(bl,yr),getHolidays(bl,yr+1));
+
+  const upcoming=Object.entries(allH)
+    .map(([key,name])=>({date:new Date(key+'T00:00:00'),name,key}))
+    .filter(h=>h.date>=today)
+    .sort((a,b)=>a.date-b.date)
+    .slice(0,16);
+
+  const fmtFull=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const fmtDay =new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'2-digit',month:'long'});
+
+  const itemsHTML=upcoming.map(h=>{
+    const dow=h.date.getDay(); // 0=So,1=Mo,2=Di,3=Mi,4=Do,5=Fr,6=Sa
+    let extra='', cls='bruecken-item';
+
+    if(dow===0||dow===6){
+      cls+=' weekend-hol';
+      extra=`<div class="weekend-badge">⚠️ Fällt aufs Wochenende</div>`;
+    } else if(dow===1){
+      cls+=' long-weekend';
+      extra=`<div class="long-badge">🎉 Langes Wochenende · 3 Tage frei, 0 Urlaubstage</div>`;
+    } else if(dow===5){
+      cls+=' long-weekend';
+      extra=`<div class="long-badge">🎉 Langes Wochenende · 3 Tage frei, 0 Urlaubstage</div>`;
+    } else if(dow===2){
+      const bd=addDays(h.date,-1);
+      if(!allH[toKey(bd)]){
+        cls+=' has-bridge';
+        extra=`<div class="bridge-badge">🌉 Brückentag ${fmtDay.format(bd)} → <strong>4 Tage frei</strong>, nur 1 Urlaubstag</div>`;
+      }
+    } else if(dow===4){
+      const bd=addDays(h.date,1);
+      if(!allH[toKey(bd)]){
+        cls+=' has-bridge';
+        extra=`<div class="bridge-badge">🌉 Brückentag ${fmtDay.format(bd)} → <strong>4 Tage frei</strong>, nur 1 Urlaubstag</div>`;
+      }
+    }
+
+    return `<div class="${cls}">
+      <div class="bruecken-date">${fmtFull.format(h.date)}</div>
+      <div class="bruecken-name">${h.name}</div>
+      ${extra}
+    </div>`;
+  }).join('');
+
+  rp.innerHTML=`<div class="panel bruecken-panel">
+    <div class="panel-title">🌉 Feiertage &amp; Brückentage <span>${bl}</span></div>
+    <div class="bruecken-subtitle">Optimale Urlaubsplanung für ${BL_NAMES[bl]||bl}</div>
+    <div class="bruecken-list">${itemsHTML}</div>
+  </div>`;
+}
+
+// Update badge + bridge panel when dropdown changes
 document.getElementById('bundesland').addEventListener('change',function(){
   document.getElementById('bl-badge').textContent=this.value;
+  renderBrueckentagePanel(this.value);
 });
 
 // ── Main calculation ───────────────────────────────────────────────────────
@@ -554,11 +652,11 @@ function renderResults({start,end,total,weekends,hols,vacation,hitH,allH,bl}){
   </div>`;
 
   rp.innerHTML=`
-    ${statsHTML}
     <div class="bottom-split">
       ${calHTML}
       ${holListHTML}
-    </div>`;
+    </div>
+    ${statsHTML}`;
 }
 
 // ── Calendar builder ───────────────────────────────────────────────────────
@@ -616,21 +714,24 @@ function buildCalendar(start,end,allH,bl){
     <div class="cal-panel">
       <div class="panel-title">🗓️ Schritt 2: Deine Übersicht <span style="font-size:.65rem;background:var(--blue-light);color:var(--accent);border-radius:6px;padding:2px 8px;">${BL_NAMES[bl]||bl}</span></div>
       <div class="cal-months">${monthsHTML}</div>
-      <div style="margin-top:16px;display:flex;gap:14px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
-          <div style="width:14px;height:14px;border-radius:4px;background:var(--teal-mid);border:1px solid rgba(61,184,160,.3)"></div>Urlaubstag
+      <div style="margin-top:16px;display:flex;gap:16px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:.6875rem;color:var(--ink2);font-weight:500">
+          <div style="width:12px;height:12px;border-radius:3px;background:var(--teal-mid);border-left:3px solid var(--teal)"></div>Urlaubstag
         </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
-          <div style="width:14px;height:14px;border-radius:4px;background:var(--red-mid);border:1px solid rgba(224,92,106,.2)"></div>Feiertag
+        <div style="display:flex;align-items:center;gap:6px;font-size:.6875rem;color:var(--ink2);font-weight:500">
+          <div style="width:12px;height:12px;border-radius:3px;background:var(--red-mid);border-left:3px solid var(--red)"></div>Feiertag
         </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--ink2);font-weight:600">
-          <div style="width:14px;height:14px;border-radius:4px;background:rgba(180,200,220,.18);border:1px solid var(--border)"></div>Wochenende
+        <div style="display:flex;align-items:center;gap:6px;font-size:.6875rem;color:var(--ink2);font-weight:500">
+          <div style="width:12px;height:12px;border-radius:3px;background:var(--blue-mid);border-left:3px solid var(--blue)"></div>Wochenende
         </div>
       </div>
     </div>`;
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+// Init bridge day panel on load
+renderBrueckentagePanel(document.getElementById('bundesland').value);
 </script>
 </body>
 </html>
