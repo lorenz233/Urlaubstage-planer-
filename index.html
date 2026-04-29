@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Urlaubsrechner · Deutschland</title>
+  <title>Urlaubstage Planer · Deutschland</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -96,6 +96,12 @@
     .panel-title span{
       background:var(--blue-light);color:var(--accent);
       border-radius:4px;padding:2px 8px;font-size:0.625rem;font-weight:500
+    }
+    .intro-copy{
+      margin:-8px 0 22px;
+      color:var(--ink2);
+      font-size:.88rem;
+      line-height:1.55;
     }
 
     /* ── Form ── */
@@ -415,6 +421,14 @@
       padding:4px 10px;
       background:rgba(37,99,235,.12);
       color:var(--accent);
+    }
+
+    .intro-copy{
+      padding:13px 14px;
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:18px;
+      background:rgba(255,255,255,.5);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
     }
 
     .field{
@@ -738,7 +752,7 @@
 
 <div class="page-header">
   <div class="header-icon">✈️</div>
-  <div class="page-title">Urlaubs-Manager</div>
+  <div class="page-title">Urlaubstage Planer</div>
   <div class="page-sub">Alle 16 Bundesländer · Feiertage automatisch berücksichtigt</div>
 </div>
 
@@ -748,6 +762,9 @@
   <div>
     <div class="panel">
       <div class="panel-title">🗓️ Schritt 1: Daten eingeben <span id="bl-badge">MV</span></div>
+      <p class="intro-copy">
+        Wähle dein Bundesland sowie Start- und Enddatum. Der Planer zeigt dir danach, wie viele Urlaubstage du wirklich brauchst und welche Wochenenden, Feiertage und Brückentage im Zeitraum liegen.
+      </p>
 
       <div class="field">
         <label>Bundesland</label>
