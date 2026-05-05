@@ -832,7 +832,12 @@ function getEaster(y){
   return new Date(y,Math.floor((h+l-7*m+114)/31)-1,(h+l-7*m+114)%31+1);
 }
 function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
-function toKey(d){return d.toISOString().slice(0,10);}
+function toKey(d){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 
 // ── Holiday data per Bundesland ────────────────────────────────────────────
 // Each function returns {dateKey: "Feiertagsname"}
